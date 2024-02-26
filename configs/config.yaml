@@ -1,0 +1,32 @@
+project_name: 'ruBert'
+task: 'text-classification'
+seed: 42
+num_classes: 2
+n_epochs: 10
+accelerator: 'gpu'
+devices: '9'
+monitor_metric: 'val_loss'
+log_every_n_steps: 20
+model_path: 'cointegrated/rubert-tiny'
+loss_fn: 'torch.nn.CrossEntropyLoss'
+
+optimizer: 'transformers.AdamW'
+optimizer_kwargs:
+  lr: 2e-5
+
+scheduler: 'transformers.get_linear_schedule_with_warmup'
+scheduler_kwargs:
+  num_warmup_steps: 0
+  num_training_steps: 80
+
+mlflow_config:
+  run_name: 'bert'
+  experiment_name: 'seq-class'
+  tracking_uri: 'http://mlflow:5000'
+
+data_config:
+  data_path: 'data'
+  max_len: 512
+  tokenizer_path: 'cointegrated/rubert-tiny'
+  batch_size: 16
+  n_workers: 4
